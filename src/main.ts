@@ -34,6 +34,8 @@ function mostrarSala(sala: Sala): void {
   }
 }
 
+
+
 //ETAPA B
 // Valida la posición y disponibilidad; reserva y devuelve un mensaje.
 function reservarAsiento(sala: Sala, fila: number, columna: number): string {
@@ -53,4 +55,51 @@ function reservarAsiento(sala: Sala, fila: number, columna: number): string {
   }
   sala[indiceFila][indiceColumna] = 1;
   return `Reserva confirmada: fila ${fila}, columna ${columna}.`;
+}
+
+
+
+//ETAPA C
+// Devuelve [ocupados, disponibles] recorriendo todos los asientos.
+function contarAsientos(sala: Sala): [number, number] {
+  let ocupados = 0;
+  let disponibles = 0;
+  for (let fila = 0; fila < sala.length; fila++) {
+    for (let columna = 0; columna < sala[fila].length; columna++) {
+      if (sala[fila][columna] === 1) {
+        ocupados++;
+      } else {
+        disponibles++;
+      }
+    }
+  }
+  return [ocupados, disponibles];
+}
+
+// Devuelve el primer par horizontal libre, o null si no existe.
+// Las posiciones devueltas usan números de fila y columna desde 1.
+function buscarAsientosContiguos(sala: Sala): ParContiguo | null {
+  for (let fila = 0; fila < sala.length; fila++) {
+    for (let columna = 0; columna < sala[fila].length - 1; columna++) {
+      if (sala[fila][columna] === 0 && sala[fila][columna + 1] === 0) {
+        return [[fila + 1, columna + 1], [fila + 1, columna + 2]];
+      }
+    }
+  }
+  return null;
+}
+
+// Muestra el mapa, los totales y el resultado de buscar un par libre.
+function mostrarResumen(sala: Sala): void {
+  mostrarSala(sala);
+  const [ocupados, disponibles] = contarAsientos(sala);
+  console.log(`Ocupados: ${ocupados} | Disponibles: ${disponibles}`);
+  const par = buscarAsientosContiguos(sala);
+  if (par === null) {
+    console.log("No hay dos asientos libres contiguos en la misma fila.");
+  } else {
+    console.log(
+      `Asientos contiguos encontrados: fila ${par[0][0]}, columnas ${par[0][1]} y ${par[1][1]}.`
+    );
+  }
 }
