@@ -1,3 +1,4 @@
+//ETAPA A
 type Asiento = 0 | 1;
 type Sala = Asiento[][];
 type Posicion = [number, number];
@@ -31,4 +32,25 @@ function mostrarSala(sala: Sala): void {
     }
     console.log(linea);
   }
+}
+
+//ETAPA B
+// Valida la posición y disponibilidad; reserva y devuelve un mensaje.
+function reservarAsiento(sala: Sala, fila: number, columna: number): string {
+  if (!Number.isInteger(fila) || !Number.isInteger(columna)) {
+    return "Reserva fallida: fila y columna deben ser números enteros.";
+  }
+  if (fila < 1 || fila > sala.length) {
+    return "Reserva fallida: la fila debe estar entre 1 y 8.";
+  }
+  if (columna < 1 || columna > sala[fila - 1].length) {
+    return "Reserva fallida: la columna debe estar entre 1 y 10.";
+  }
+  const indiceFila = fila - 1;
+  const indiceColumna = columna - 1;
+  if (sala[indiceFila][indiceColumna] === 1) {
+    return `Reserva fallida: el asiento de fila ${fila}, columna ${columna} ya está ocupado.`;
+  }
+  sala[indiceFila][indiceColumna] = 1;
+  return `Reserva confirmada: fila ${fila}, columna ${columna}.`;
 }
