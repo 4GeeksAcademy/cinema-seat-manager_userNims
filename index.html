@@ -1,26 +1,102 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World with Typescript</title>
+    <title>Cinema Seat Manager</title>
   </head>
-  <body class="min-h-screen bg-slate-100 text-slate-900">
-    <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 p-6">
-      <h1 class="text-4xl font-bold tracking-tight">Hello World with Typescript</h1>
+  <body class="min-h-screen bg-slate-100 text-slate-900 antialiased p-4 sm:p-8">
+    <main class="mx-auto flex max-w-3xl flex-col gap-6">
+      <!-- Encabezado -->
+      <header class="flex flex-col gap-1 text-center sm:text-left">
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">
+          Cinema Seat Manager
+        </h1>
+        <p class="text-sm text-slate-600">
+          Sala de cine de 8 filas y 10 columnas. Clic izquierdo para reservar o clic derecho para desmarcar.
+        </p>
+      </header>
 
-      <section class="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <img
-          src="/rigo-baby.jpg"
-          alt="Hello Rigo"
-          class="h-64 w-full bg-slate-50 object-contain p-2"
-        />
-        <div class="p-5">
-          <h2 class="text-xl font-semibold text-slate-900">Hello Rigo</h2>
-          <p id="app" class="mt-2 text-sm text-slate-600"></p>
+      <!-- Panel de mensajes en tiempo real -->
+      <section aria-label="Estado de la reserva">
+        <div
+          id="mensaje"
+          role="status"
+          aria-live="polite"
+          class="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm"
+        >
+          Haz clic izquierdo para reservar (L) o clic derecho para desmarcar (X).
         </div>
       </section>
+
+      <!-- Indicadores y métricas (tuplas de conteo y búsqueda) -->
+      <section class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Asientos Ocupados (X)
+          </p>
+          <p id="conteo-ocupados" class="mt-1 text-2xl font-bold text-rose-600">0</p>
+        </div>
+
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Asientos Libres (L)
+          </p>
+          <p id="conteo-disponibles" class="mt-1 text-2xl font-bold text-emerald-600">80</p>
+        </div>
+
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Primer Par Libre Horizontal
+          </p>
+          <p id="par-libre" class="mt-1 text-sm font-semibold text-slate-800">
+            Calculando...
+          </p>
+        </div>
+      </section>
+
+      <!-- Leyenda -->
+      <section class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600">
+        <div class="flex items-center gap-2">
+          <span class="flex h-6 w-6 items-center justify-center rounded border border-emerald-300 bg-emerald-100 font-bold text-emerald-800">
+            L
+          </span>
+          <span>Libre (clic izq. para reservar)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-6 w-6 items-center justify-center rounded border border-rose-300 bg-rose-100 font-bold text-rose-700">
+            X
+          </span>
+          <span>Ocupado (clic der. para desmarcar)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-6 w-6 items-center justify-center rounded border border-amber-400 bg-amber-200 font-bold text-amber-900 ring-2 ring-amber-400 ring-offset-1">
+            L
+          </span>
+          <span>Par contiguo</span>
+        </div>
+      </section>
+
+      <!-- Pantalla simulada de cine -->
+      <div class="flex flex-col items-center gap-1">
+        <div class="h-2 w-full max-w-md rounded-full bg-slate-300 shadow-inner"></div>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+          PANTALLA
+        </span>
+      </div>
+
+      <!-- Mapa interactivo de asientos centrado respecto al fondo blanco, con scroll horizontal si es necesario -->
+      <section class="w-full overflow-x-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div
+          id="mapa"
+          role="region"
+          aria-label="Mapa interactivo de asientos"
+          class="mx-auto flex w-fit min-w-max flex-col gap-1.5"
+        ></div>
+      </section>
     </main>
-    <script type="module" src="/src/main.ts"></script>
+
+    <!-- Punto de entrada para el navegador -->
+    <script type="module" src="/src/web.ts"></script>
   </body>
 </html>
